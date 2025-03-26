@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bluefire - The Shittiest Executor Of All Time</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: #000000;
+            background-image: radial-gradient(rgba(0, 198, 255, 0.1) 1px, transparent 1px);
+            background-size: 30px 30px;
+            color: #ffffff;
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            padding: 20px 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            background: linear-gradient(90deg, #00c6ff, #0072ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 10px rgba(0, 198, 255, 0.7);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 30px;
+        }
+
+        nav ul li a {
+            color: #ffffff;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: #00c6ff;
+            text-shadow: 0 0 10px rgba(0, 198, 255, 0.7);
+        }
+
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 20px;
+            background: #000000;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.5;
+            z-index: 0;
+            transition: all 10s ease-in-out;
+        }
+
+        .orb-1 {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle at center, #00c6ff, #0072ff);
+            top: -100px;
+            left: -100px;
+            animation: float 15s ease-in-out infinite alternate;
+        }
+
+        .orb-2 {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle at center, #6a11cb, #2575fc);
+            bottom: -150px;
+            right: -150px;
+            animation: float 18s ease-in-out infinite alternate-reverse;
+        }
+
+        .orb-3 {
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle at center, #00c6ff, #0072ff);
+            top: 50%;
+            left: 60%;
+            animation: float 20s ease-in-out infinite alternate;
+        }
+
+        .orb-4 {
+            width: 250px;
+            height: 250px;
+            background: radial-gradient(circle at center, #0072ff, #6a11cb);
+            top: 30%;
+            left: 10%;
+            animation: float 12s ease-in-out infinite alternate-reverse;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+            50% {
+                transform: translate(30px, 30px) scale(1.05);
+            }
+            100% {
+                transform: translate(-30px, -20px) scale(0.95);
+            }
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 150px;
+            background: linear-gradient(to bottom, transparent, #000000);
+            z-index: 2;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+        }
+
+        .title {
+            font-size: 80px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, #00c6ff, #0072ff, #6a11cb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 15px rgba(0, 198, 255, 0.8);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 5px rgba(0, 198, 255, 0.5);
+            }
+            to {
+                text-shadow: 0 0 10px rgba(0, 198, 255, 0.9), 0 0 30px rgba(0, 114, 255, 0.7);
+            }
+        }
+
+        .description {
+            font-size: 18px;
+            margin-bottom: 30px;
+            max-width: 600px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            background: linear-gradient(90deg, #00c6ff, #0072ff);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 18px;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(0, 198, 255, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 30px rgba(0, 198, 255, 0.8);
+        }
+
+        .cta-button:after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+
+        .cta-button:hover:after {
+            transform: translateX(0);
+        }
+
+        .cta-button svg {
+            margin-right: 10px;
+        }
+
+        .section {
+            padding: 100px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+            position: relative;
+        }
+
+        .section:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            height: 1px;
+            background: linear-gradient(90deg,
+                transparent,
+                rgba(0, 198, 255, 0.3),
+                transparent);
+        }
+
+        .section.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section-title {
+            font-size: 36px;
+            margin-bottom: 40px;
+            text-align: center;
+            background: linear-gradient(90deg, #00c6ff, #0072ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .resellers-grid, .price-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(100px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .reseller-card, .price-card, .changelog, .team-member-card {
+            background: linear-gradient(145deg, #0a0a0a, #0d0d0d);
+            border-radius: 15px;
+            padding: 30px;
+            transition: all 0.5s ease;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .reseller-card.active, .price-card.active, .changelog.active, .team-member-card.active {
+            opacity: 1;
+            transform: translateY(0);
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .reseller-card:hover, .changelog:hover, .team-member-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 30px rgba(0, 198, 255, 0.3);
+            border: 1px solid rgba(0, 198, 255, 0.3);
+        }
+
+        .price-card {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .price-card.available {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .price-card.available:hover {
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: 0 10px 30px rgba(0, 198, 255, 0.4);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0, 198, 255, 0.3);
+        }
+
+        .price-card.unavailable {
+            opacity: 0.5;
+            transition: none;
+        }
+
+        .reseller-name, .price-name, .team-member-name {
+            font-size: 22px;
+            margin-bottom: 10px;
+            color: white;
+            text-align: center;
+        }
+
+        .reseller-contact {
+            display: block;
+            color: #00c6ff;
+            text-decoration: none;
+        }
+
+        .reseller-contact:hover {
+            text-decoration: underline;
+        }
+
+        .price-amount {
+            font-size: 32px;
+            margin: 15px 0;
+            background: linear-gradient(90deg, #00c6ff, #0072ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .price-feature {
+            margin: 10px 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .price-feature svg {
+            margin-right: 10px;
+            fill: #00c6ff;
+        }
+
+        .changelog-version {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        .changelog-date {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 20px;
+        }
+
+        .changelog-list {
+            list-style: none;
+        }
+
+        .changelog-item {
+            margin: 10px 0;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .changelog-item::before {
+            content: '&bull;';
+            color: #00c6ff;
+            margin-right: 10px;
+        }
+
+        .testimonials-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .testimonial {
+            background: linear-gradient(145deg, #0a0a0a, #0d0d0d);
+            border-radius: 15px;
+            padding: 30px;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .testimonial:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 30px rgba(0, 198, 255, 0.3);
+            border: 1px solid rgba(0, 198, 255, 0.3);
+        }
+
+        .testimonial:before {
+            content: '"';
+            position: absolute;
+            top: 10px;
+            left: 20px;
+            font-size: 60px;
+            color: rgba(0, 198, 255, 0.2);
+            font-family: Georgia, serif;
+        }
+
+        .testimonial-text {
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        .testimonial-author {
+            font-weight: bold;
+            color: #00c6ff;
+        }
+
+        .faq-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            background: linear-gradient(145deg, #0a0a0a, #0d0d0d);
+            border-radius: 15px;
+            padding: 20px 30px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .faq-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 20px rgba(0, 198, 255, 0.2);
+            border: 1px solid rgba(0, 198, 255, 0.2);
+        }
+
+        .faq-question {
+            font-size: 18px;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 10px;
+            position: relative;
+            padding-right: 30px;
+        }
+
+        .faq-question::after {
+            content: '+';
+            position: absolute;
+            right: 0;
+            top: 0;
+            font-size: 22px;
+            color: #00c6ff;
+            transition: transform 0.3s ease;
+        }
+
+        .faq-item.active .faq-question::after {
+            transform: rotate(45deg);
+        }
+
+        .faq-answer {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, margin-top 0.3s ease;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 500px;
+            margin-top: 10px;
+        }
+
+        footer {
+            background-color: #0a0a0a;
+            padding: 50px 20px;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-text {
+            margin: 20px 0;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .logo {
+                margin-bottom: 0;
+            }
+
+            .burger-menu {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-around;
+                width: 30px;
+                height: 24px;
+                background: transparent;
+                border: none;
+                cursor: pointer;
+                padding: 0;
+                z-index: 1001;
+            }
+
+            .burger-menu .bar {
+                width: 100%;
+                height: 3px;
+                background-color: white;
+                transition: all 0.3s ease;
+            }
+
+            nav.nav-menu {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background-color: rgba(0, 0, 0, 0.9);
+                backdrop-filter: blur(10px);
+                padding: 20px 0;
+                text-align: center;
+                z-index: 1000;
+            }
+
+            nav.nav-menu.active {
+                display: block;
+            }
+
+            nav.nav-menu ul {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                list-style: none;
+                padding: 0;
+                margin: 0;
+            }
+
+            nav.nav-menu ul li {
+                margin: 15px 0;
+            }
+
+            nav.nav-menu ul li a {
+                color: #ffffff;
+                text-decoration: none;
+                font-size: 18px;
+                padding: 10px 20px;
+                display: block;
+                transition: all 0.3s ease;
+            }
+
+            nav.nav-menu ul li a:hover {
+                color: #00c6ff;
+                text-shadow: 0 0 10px rgba(0, 198, 255, 0.7);
+            }
+
+            .burger-menu.active .bar:nth-child(1) {
+                transform: rotate(-45deg) translate(-7px, 6px);
+            }
+
+            .burger-menu.active .bar:nth-child(2) {
+                opacity: 0;
+            }
+
+            .burger-menu.active .bar:nth-child(3) {
+                transform: rotate(45deg) translate(-7px, -6px);
+            }
+        }
+        .burger-menu {
+            display: none;
+        }
+        @media (max-width: 768px) {
+            .burger-menu {
+                display: flex;
+            }
+        }       
+
+        .team-member-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .team-member-card img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin-bottom: 15px;
+            object-fit: cover;
+        }
+
+        .team-member-title {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo">Bluefire</div>
+            <button class="burger-menu">
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+            </button>
+            <nav class="nav-menu">
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#pricing">Pricing</a></li>
+                    <li><a href="#resellers">Resellers</a></li>
+                    <li><a href="#our-team">Our Team</a></li>
+                    <li><a href="#testimonials">Reviews</a></li>
+                    <li><a href="#changelog">Changelog</a></li>
+                    <li><a href="#faq">FAQ</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero" id="home">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+        <div class="orb orb-4"></div>
+
+        <div class="hero-content">
+            <h1 class="title">Bluefire</h1>
+            <p class="description">The worst and most dogshit executor known to man kind, we hate UX and provide hate on people for having a better executor.</p>
+            <a href="" class="cta-button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24" fill="white">
+                    <path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189z"></path>
+                </svg>
+                Join Discord
+            </a>
+        </div>
+    </section>
+    <section class="section" id="pricing">
+        <h2 class="section-title">Pricing</h2>
+        <div class="price-grid">
+            <div class="price-card unavailable">
+                <h3 class="price-name">Weekly</h3>
+                <p class="price-amount">$0.99</p>
+                <div class="price-feature">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewbox="0 0 24 24">
+                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"></path>
+                    </svg>
+                    Access to our shitass executor
+                </div>
+                <div class="price-feature">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewbox="0 0 24 24">
+                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"></path>
+                    </svg>
+                    Overpriced
+                </div>
+                <div class="price-feature">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewbox="0 0 24 24">
+                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"></path>
+                    </svg>
+                    Terrible support
+                </div>
+            </div>
+            <div class="price-card unavailable">
+                <h3 class="price-name">Monthly</h3>
+                <p class="price-amount">$2.99</p>
+                <div class="price-feature">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewbox="0 0 24 24">
+                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"></path>
+                    </svg>
+                    All weekly features
+                </div>
+                <div class="price-feature">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewbox="0 0 24 24">
+                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"></path>
+                    </svg>
+                    Overpriced as fuck
+                </div>
+                <div class="price-feature">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewbox="0 0 24 24">
+                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"></path>
+                    </svg>
+                    Shitty support team
+                </div>
+            </div>
+            <div class="price-card available">
+                <h3 class="price-name">Lifetime</h3>
+                <p class="price-amount">$9.99</p>
+                <div class="price-feature">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewbox="0 0 24 24">
+                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"></path>
+                    </svg>
+                    All monthly features
+                </div>
+                <div class="price-feature">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewbox="0 0 24 24">
+                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"></path>
+                    </svg>
+                    Early Access to exit scam
+                </div>
+                <div class="price-feature">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewbox="0 0 24 24">
+                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"></path>
+                    </svg>
+                    SUPER OVERPRICED!
+                </div>
+                <div class="price-feature">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewbox="0 0 24 24">
+                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"></path>
+                    </svg>
+                    Wont RAT you because ur a VIP
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="section" id="resellers">
+        <h2 class="section-title">Official Resellers</h2>
+        <div class="resellers-grid">
+            <div class="reseller-card">
+                <h3 class="reseller-name">UltraSkid</h3>
+                <p>Funpay Reseller.</p>
+                <a href="https://shop.ultraskid.space/" class="reseller-contact"></a>
+                <a href="https://funpay.com/users/2477726/" class="reseller-contact"></a>
+            </div>
+            <div class="reseller-card">
+                <h3 class="reseller-name">freShy</h3>
+                <p>Funpay Reseller, lowest price</p>
+                <a href="https://funpay.com/users/12253796/" class="reseller-contact"></a>
+            </div>
+            <div class="reseller-card">
+                <h3 class="reseller-name">We are looking for Resellers!</h3>
+                <p>Contact us today to HELP US RAT MORE PEOPLE!</p>
+                <a href="https://discord.gg/vkcM4P7FK8" class="reseller-contact"></a>
+            </div>
+        </div>
+    </section>
+
+
+    <section class="section" id="testimonials">
+        <h2 class="section-title">What Our Users Say</h2>
+        <div class="testimonials-container">
+            <div class="testimonial">
+                <p class="testimonial-text">Got Ratted 0 / 10</p>
+                <div class="testimonial-author">- wotofack, Tester</div>
+            </div>
+            <div class="testimonial">
+                <p class="testimonial-text">Fucking terrible executor.</p>
+                <div class="testimonial-author">- UltraSkid, Reseller</div>
+            </div>
+            <div class="testimonial">
+                <p class="testimonial-text">Never using this again.</p>
+                <div class="testimonial-author">- .5wzx3, Tester</div>
+            </div>
+
+
+    <footer>
+        <div class="footer-content">
+            <div class="logo">Bluefire</div>
+            <p class="footer-text">&copy; 2025 Bluefire. All rights reserved.</p>
+            <p class="footer-text">
+                <a href="privacy.html" style="color: rgba(255, 255, 255, 0.5); text-decoration: none;">Privacy Policy</a> |
+                <a href="refunds.html" style="color: rgba(255, 255, 255, 0.5); text-decoration: none;">Refunds Policy</a> |
+                <a href="tos.html" style="color: rgba(255, 255, 255, 0.5); text-decoration: none;">Terms of Service</a>
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        document.addEventListener('keydown', e => {
+            if (e.key === 'F12') {
+                e.preventDefault();
+                window.location.href = 'LOOOOL.html';
+            }
+
+            if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === '&#1064;')) {
+                e.preventDefault();
+                window.location.href = 'LOOOOL.html';
+            }
+
+            if (e.ctrlKey && e.shiftKey && (e.key === 'J' || e.key === '&#1054;')) {
+                e.preventDefault();
+                window.location.href = 'LOOOOL.html';
+            }
+            if (e.ctrlKey && (e.key === 'c' || e.key === 'u' || e.key === '&#1075;' || e.key === 's' || e.key === '&#1099;' || e.key === '&#1110;')) {
+                e.preventDefault();
+            }
+        });
+        document.addEventListener('mousedown', e => { if (e.detail > 1) e.preventDefault(); });
+        document.addEventListener('DOMContentLoaded', () => {
+        const burgerMenu = document.querySelector('.burger-menu');
+        const navMenu = document.querySelector('.nav-menu');
+
+        burgerMenu.addEventListener('click', () => {
+            burgerMenu.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!burgerMenu.contains(e.target) && !navMenu.contains(e.target) && navMenu.classList.contains('active')) {
+                burgerMenu.classList.remove('active');
+                navMenu.classList.remove('active');
+            }
+        });
+
+        const faqItems = document.querySelectorAll('.faq-item');
+        faqItems.forEach(item => {
+            item.addEventListener('click', () => {
+                faqItems.forEach(otherItem => {
+                    if (otherItem !== item && otherItem.classList.contains('active')) {
+                        otherItem.classList.remove('active');
+                    }
+                });
+                item.classList.toggle('active');
+            });
+        });
+
+        const sections = document.querySelectorAll('.section');
+        const cards = document.querySelectorAll('.reseller-card, .price-card, .changelog, .team-member-card');
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        sections.forEach(section => observer.observe(section));
+        cards.forEach(card => observer.observe(card));
+
+        const orbs = document.querySelectorAll('.orb');
+        document.addEventListener('mousemove', (e) => {
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            orbs.forEach((orb, index) => {
+                const speed = 0.03 + (index * 0.01);
+                const offsetX = (x - 0.5) * 40 * speed;
+                const offsetY = (y - 0.5) * 40 * speed;
+                orb.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
+            });
+        });
+    });
+    </script>
+</body>
+</html>
